@@ -15,7 +15,7 @@
 }
 
 .profile {
-    style: 540px;
+    width: 540px;
     display: flex;
     justify-content: center;
     align-items: center;
