@@ -1,13 +1,17 @@
 const profile = document.getElementById("profile");
-
+const searchHistory = document.getElementById("searchHistory");
 const APIURL = "https://api.github.com/users/";
 
+const listOfUserSearched = [];
+
+
+// user function
 async function user(){
     let username = document.getElementById("username");
     let response = await fetch(APIURL+username.value);
-    
     if(response.status === 200){
         let data = await response.json();
+        updateLocalStorage(username.value);
         profile.innerHTML = `
         <div class="profile card mb-3" style="width: 540px;">
             <div class="row g-0">
@@ -22,6 +26,11 @@ async function user(){
                 </div>
             </div>  
         </div>`;
+        for (const value of listOfUserSearched){
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(value));
+            searchHistory.appendChild(li);
+        }
     }
     else{
         profile.innerHTML = `
@@ -32,4 +41,13 @@ async function user(){
         </div>`;
     }
     username.value = "";
+}
+
+// updateLocalStorage function
+function updateLocalStorage(username){
+    searchHistory.innerHTML="";
+    if (!listOfUserSearched.includes(username)){
+        listOfUserSearched.push(username);
+        localStorage.setItem("listOfUserSearched",JSON.stringify(listOfUserSearched));
+    }
 }
